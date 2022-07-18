@@ -1,0 +1,67 @@
+<wxs src="../../utils/capture.wxs" module="tools" />
+<view class="selectItem">
+    <picker class="picker" mode="date" fields="year" value="{{date}}" bindchange="bindDateChange">
+        <view>选择日期:</view>
+        <view>{{date}}</view>
+    </picker>
+    <view class="showMoney">
+        <view>年收入：<text class="digitshow">{{incomeAmount}}</text></view>
+        <view>年支出：<text class="digitshow">{{expenseAmount}}</text></view>
+    </view>
+</view>
+
+<block wx:for="{{allObj}}" wx:key="obj" wx:for-index="key" wx:for-item="result">
+    <view class="showMonth" bindtap="isShowDayDetail" data-month="{{key}}">
+        <view wx:if="{{key != showMonth}}" style="height: 0;border: 16rpx solid transparent;width: 0;border-left-color:rgb(66, 8, 64);"></view>
+        <view wx:else style="margin-top: 14rpx;height: 0;border: 16rpx solid transparent;width: 0;border-top-color:rgb(66, 8, 64);"></view>
+        <view>{{key}}月</view>
+        <view style="margin: auto 20rpx;">月收入：<text  class="digitshow">{{result.monthIncome}}</text></view>
+        <view>月支出：<text  class="digitshow">{{result.monthExpense}}</text></view>
+    </view>
+    <view wx:if="{{showMonth == key}}">
+    <block wx:for="{{result.arr}}" wx:key="result" wx:for-index="key0" wx:for-item="value0">
+        <view class="showDay" bindtap="isShowDayDetail" data-day="{{value0.date}}">
+            <view wx:if="{{showDay != value0.date}}" style="margin-top: 10rpx;height: 0;border: 16rpx solid transparent;width: 0;border-left-color:rgb(66, 8, 64);"></view>
+            <view wx:else style="margin-top: 20rpx;height: 0;border: 16rpx solid transparent;width: 0;border-top-color:rgb(66, 8, 64);"></view>
+            <view>{{tools.substr(value0.date,8)}}日</view>
+            <view style="margin: auto 20rpx;">收入：<text  class="digitshow">{{value0.income.totalAmount}}</text></view>
+            <view>支出：<text  class="digitshow">{{value0.expense.totalAmount}}</text></view>
+        </view>
+
+        <view wx:if="{{showDay == value0.date}}" class="showDetail">
+            <block wx:for="{{value0.income}}" wx:key="income" wx:for-index="key1" wx:for-item="value1">
+            <view wx:if="{{key1 != 'totalAmount'}}">
+            <block wx:for="{{value1}}" wx:key="key" wx:for-index="key2" wx:for-item="value2">
+            <block wx:for="{{value2}}" wx:key="index" wx:for-index="key3" wx:for-item="value3">
+                <view class="showIncome" wx:if="{{value3.fund != ''}}">
+                    <view class="showTotal">收入</view>
+                    <view class="showCategory">{{income[key1].name}}</view>
+                    <view class="showMoney">{{value3.fund}}</view>
+                    <view class="showRemarks">{{value3.remarks?value3.remarks:income[key1].details[key2].name}}</view>
+                </view>
+            </block>
+            </block>
+            </view>
+            </block>
+            <block wx:for="{{value0.expense}}" wx:key="expense" wx:for-index="key1" wx:for-item="value1">
+            <view wx:if="{{key1 != 'totalAmount'}}">
+            <block wx:for="{{value1}}" wx:key="key" wx:for-index="key2" wx:for-item="value2">
+            <block wx:for="{{value2}}" wx:key="index" wx:for-index="key3" wx:for-item="value3">
+                <view class="showExpense" wx:if="{{value3.fund != ''}}">
+                    <view class="showTotal">支出</view>
+                    <view class="showCategory">{{expense[key1].name}}</view>
+                    <view class="showMoney">{{value3.fund}}</view>
+                    <view class="showRemarks">{{value3.remarks?value3.remarks:expense[key1].details[key2].name}}</view>
+                </view>
+            </block>
+            </block>
+            </view>
+            </block>
+        </view>
+
+    </block>
+    </view>
+
+
+</block>
+

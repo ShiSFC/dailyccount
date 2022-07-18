@@ -1,0 +1,12 @@
+var substr = function(str,start,end){
+    if(str){
+        return str.substring(start,end)
+    }
+    else{
+        return ''
+    }
+}
+
+module.exports = {
+    substr:substr,
+}

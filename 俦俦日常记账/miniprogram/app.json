@@ -1,0 +1,31 @@
+{
+    "pages": [
+        "pages/keepAccount/keepAccount",
+        "pages/dailyDetail/dailyDetail"
+    ],
+    "window": {
+        "backgroundColor": "#F6F6F6",
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#F6F6F6",
+        "navigationBarTitleText": "俦俦记账",
+        "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+        "list": [
+            {
+                "pagePath": "pages/keepAccount/keepAccount",
+                "text": "记账",
+                "iconPath": "images/icon1.png",
+                "selectedIconPath": "images/sicon1.png"
+            },
+            {
+                "pagePath": "pages/dailyDetail/dailyDetail",
+                "text": "账单",
+                "iconPath": "images/icon2.png",
+                "selectedIconPath": "images/sicon2.png"
+            }
+        ]
+    },
+    "sitemapLocation": "sitemap.json",
+    "style": "v2"
+}

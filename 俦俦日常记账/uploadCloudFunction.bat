@@ -1,0 +1,1 @@
+"D:\APP\微信web开发者工具\cli.bat" cloud functions deploy --e cloud1-1g37kkf88b01cc86 --n quickstartFunctions --r --project "F:\代码练习\微信小程序\俦俦日常记账" --report_first --report

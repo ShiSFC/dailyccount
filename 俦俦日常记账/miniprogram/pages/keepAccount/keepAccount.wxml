@@ -1,0 +1,48 @@
+<view wx:if="{{!isLogin && !openid}}" class="clickLogin">
+    <view>{{err}}</view>
+    <button type="primary" bindtap="login">请先登录</button>
+</view>
+
+<view wx:else>
+<view>{{otherErr}}</view>
+<view class="header" wx:if="{{!otherErr}}">
+    <view class="{{!show_item?'checked_header':'normal_header'}}" data-check="income" bindtap="checkHeader">收入</view>
+    <view class="{{show_item?'checked_header':'normal_header'}}" data-check="expense" bindtap="checkHeader">支出</view>
+</view>
+<view class="body" wx:if="{{!otherErr}}">
+<view class="session">
+    <picker class="picker" mode="date" name="date" value="{{date}}" bindchange="bindDateChange">
+        <view>{{date}}</view>
+    </picker>
+    <view class="amount" hidden="{{!show_item}}"><text class="description_text">总支出：</text>{{totalAmount}}</view>
+    <view class="amount" hidden="{{show_item}}"><text class="description_text">总收入：</text>{{totalAmount}}</view>
+</view>
+ 
+<view class="classify_container">
+    <block wx:for="{{show_item?expense:income}}" wx:for-index="key" wx:for-item="value" wx:key="items">
+        <view class="item_detail,{{value.checked?'checked_classify':'normal_classify'}}" data-category='{{key}}' bindtap='categoryTap'>{{value.name}}</view>
+    </block>
+</view>
+
+<block wx:for="{{show_item?expense:income}}" wx:for-index="key" wx:for-item="value" wx:key="items">
+    <view class="item_container" hidden="{{!value.checked}}">
+        <block wx:for="{{value.details}}" wx:for-index="key2" wx:for-item="value2" wx:key="item">
+            <view hover-class="hover_item" class="item_detail,{{value2.checked?'checked_classify':'normal_classify'}}" data-detail="{{key2}}" data-note="{{value2.name}}" bindtap="detailTap">{{value2.name}}</view>
+        </block>
+    </view>
+</block>
+
+<view class="footer">
+<block wx:for="{{account}}" wx:key="account">
+    <view class="form_style">
+        <view class="remarks_text">{{index+1}}</view>
+        <input class="remarks_style" type="text" name="remarks" value="{{item.remarks}}" bindblur="bindKeyInput" placeholder="备注..." data-index="{{index}}" data-type="remarks"/>
+        <input class="fee_style" name="fund" type="digit" maxlength="12" bindblur="bindKeyInput" bindinput="bindReplaceInput" placeholder="金额" value="{{item.fund}}" data-index="{{index}}" data-type="fund"/>
+    </view>
+</block>
+</view>
+
+<!-- <view class="add_item" bindtap="addItem">+</view> -->
+
+</view>
+</view>
