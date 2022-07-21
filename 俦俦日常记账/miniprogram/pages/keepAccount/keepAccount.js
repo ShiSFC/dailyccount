@@ -12,138 +12,13 @@ Page({
         accountData:{},
         category:"cater",
         categoryDetail:"breakfast",
-        account:[{remarks:"",fund:""}],
+        account:[],
         totalAmount:0,
         show_item:true,//默认显示支出记账页面
-        income:{
-            salary:{name: '工资', checked: true, details: {
-                salary:{name: '基本工资', checked: true},
-                Commission:{name: '提成'},
-                other:{name: '其他'}
-            }},
-            revenue:{name: '收益', details: {
-                stablerevenue:{name: '定期', checked: true},
-                revenue:{name: '基金'},
-                fleece:{name: '薅羊毛'},
-                other:{name: '其他'}
-            }},
-            contact:{name: '社交', details: {
-                redenvelopes:{name: '红包', checked: true},
-                favor:{name:'人情'},
-                other:{name: '其他'}
-            }},
-            other:{name: '其他', details: {
-                other:{name: '其他', checked: true},
-            }},
-        },
-        expense:{
-            cater:{name: '餐饮', checked: true, details: {
-                breakfast:{name: '早餐', checked: true},
-                lunch:{name: '午餐'},
-                dinner:{name: '晚餐'},
-                drink:{name: '饮料'},
-                snacks:{name: '零食'},
-                fruits:{name: '水果'},
-                Vegetables:{name: '蔬菜'},
-                other:{name: '其他'}
-                }
-            },
-            daily:{name: '日常', details: {
-                clothes:{name: '服装', checked: true},
-                dailyNecessities:{name: '日用品'},
-                expressDelivery:{name: '快递'},
-                phoneBill:{name: '话费'},
-                other:{name: '其他'}
-                }
-            },
-            traffic:{name: '交通', details: {
-                bus:{name: '公交', checked: true},
-                subway:{name: '地铁'},
-                car:{name: '汽车'},
-                plane:{name: '飞机'},
-                ship:{name: '船'},
-                other:{name: '其他'}
-                }
-            },
-            housing: {name: '住房', details: {
-                car:{name: '房租', checked: true},
-                water:{name: '水费'},
-                electric:{name: '电费'},
-                gas:{name: '气费'},
-                Property:{name: '物业'},
-                other:{name: '其他'}
-                }
-            },
-            contact: {name: '社交', details: {
-                gift:{name: '礼物', checked: true},
-                travel:{name: '旅游'},
-                redenvelopes:{name: '红包'},
-                circulate:{name: '借还'},
-                favor:{name: '人情'},
-                other:{name: '其他'}
-                }
-            },
-            medical: {name: '医疗', details: {
-                register:{name: '挂号', checked: true},
-                inspect:{name: '检查'},
-                medicine:{name: '药'},
-                other:{name: '其他'}
-                }
-            },
-            education:{name: '教育', details: {
-                exam:{name: '考试', checked: true},
-                book:{name: '书籍'},
-                course:{name: '课程'},
-                other:{name: '其他'}
-                }
-            },
-            other:{name: '其他', details: {other:{name: '其他',checked:true}}},
-        }
-    },
-
-    // 登录
-    login() {
-        wx.getUserProfile({
-            desc: '用于完善会员资料', 
-            success: (res) => {
-                wx.showLoading({
-                  title: '加载中',
-                })
-                this.getOpenid()
-                wx.setStorageSync('user', res.userInfo)
-                wx.setStorageSync('isLogin', true)
-                wx.setStorageSync('expense', this.data.expense)
-                wx.setStorageSync('income', this.data.income)
-                this.setData({
-                    isLogin:true,
-                    err:""
-                })
-                setTimeout(res=>wx.hideLoading(),500)
-                wx.showTabBar()
-            },
-            fail: (err) =>{
-                this.setData({
-                    err:"授权才能进入俦俦日记账本"
-                })
-            }
-        })
-    },
-
-    // 获取openid
-    getOpenid(){
-        wx.cloud.callFunction({
-            name:'getOpenId',
-            complete: res=>{
-                wx.setStorageSync('openid', res.result.openid)
-                this.setData({
-                    openid: res.result.openid
-                })
-                this.initAccount()
-            }
-        })
     },
 
     // 类别切换，获取对应的渲染数据
+    
     changeAccount: function(){
         let {show_item,category,categoryDetail,account,totalAccount} = this.data
         let itemName = show_item?"expense":"income"
@@ -434,7 +309,7 @@ Page({
      */
     initAccount: function(){
         let id = this.data.openid+'_'+this.data.date
-        console.log("initAccount id",id)
+        console.log("initAccount start id",id)
         this.getBaseData(id)
         .then(res=>{
             console.log('res',res)
@@ -538,15 +413,21 @@ Page({
             let isLogin = wx.getStorageSync('isLogin')
             // console.log("keepAmount onload",openid)
             if (openid && isLogin) {
+                let expense = wx.getStorageSync('expense')
+                let income = wx.getStorageSync('income')
                 this.setData({
-                    openid,isLogin
+                    openid,isLogin,income,expense
                 })
-                wx.showTabBar()
                 this.initAccount()
             }
             else{
-                wx.hideTabBar()
-                console.log("not login, openid:",openid)                
+                // wx.hideTabBar()
+                console.log("not login, openid:",isLogin,openid)
+                setTimeout(()=> {
+                    wx.reLaunch({
+                    url: '../login/login',
+                       })
+                    }, 1000);            
             }
         } catch (e) {
             console.log("keepAmount onload err",e)            

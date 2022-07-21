@@ -1,9 +1,3 @@
-<view wx:if="{{!isLogin && !openid}}" class="clickLogin">
-    <view>{{err}}</view>
-    <button type="primary" bindtap="login">请先登录</button>
-</view>
-
-<view wx:else>
 <view>{{otherErr}}</view>
 <view class="header" wx:if="{{!otherErr}}">
     <view class="{{!show_item?'checked_header':'normal_header'}}" data-check="income" bindtap="checkHeader">收入</view>
@@ -45,4 +39,4 @@
 <!-- <view class="add_item" bindtap="addItem">+</view> -->
 
 </view>
-</view>
+

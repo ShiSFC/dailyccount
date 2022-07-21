@@ -1,0 +1,4 @@
+<view class="clickLogin">
+    <view>{{err}}</view>
+    <button type="primary" bindtap="login">请先登录</button>
+</view>

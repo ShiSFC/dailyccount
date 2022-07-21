@@ -1,7 +1,8 @@
 {
     "pages": [
         "pages/keepAccount/keepAccount",
-        "pages/dailyDetail/dailyDetail"
+        "pages/dailyDetail/dailyDetail",
+        "pages/login/login"
     ],
     "window": {
         "backgroundColor": "#F6F6F6",
